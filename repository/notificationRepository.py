@@ -34,17 +34,17 @@ class NotificationRepository:
             DbConnection.conn.commit()
 
     async def notify_send_invitation(self, driver_order_id, passenger_id):
-        url = f'http://{{host_port}}/internal/notification/invitation/send?passengerId={passenger_id}&driverOrderId={driver_order_id}'
+        url = f'https://{{host_port}}/internal/notification/invitation/send?passengerId={passenger_id}&driverOrderId={driver_order_id}'
 
         await self.__notify_send_websocket(passenger_id, url)
 
     async def notify_accept_invitation(self, passenger_order_id, driver_id, accepted):
-        url = f'http://{{host_port}}/internal/notification/invitation/accept?driverId={driver_id}&passengerOrderId={passenger_order_id}&accepted={int(accepted)}'
+        url = f'https://{{host_port}}/internal/notification/invitation/accept?driverId={driver_id}&passengerOrderId={passenger_order_id}&accepted={int(accepted)}'
 
         await self.__notify_send_websocket(driver_id, url)
 
     async def send_driver_position(self, passenger_id, passenger_order_id, position):
-        url = f'http://{{host_port}}/internal/position/send?passengerOrderId={passenger_order_id}&position={position}'
+        url = f'https://{{host_port}}/internal/position/send?passengerOrderId={passenger_order_id}&position={position}'
 
         await self.__notify_send_websocket(passenger_id, url)
 
