@@ -49,8 +49,10 @@ class NotificationRepository:
         await self.__notify_send_websocket(passenger_id, url)
 
     async def __notify_send_websocket(self, user_id, internal_url):
+        print('notificationRepository: enter notify send websocket')
         sql = f'''SELECT host_port FROM websocket
                   WHERE user_id = {user_id};'''
+        print(f'notificationRepository: sql = {sql}')
 
         # check connection
         try:
@@ -68,9 +70,11 @@ class NotificationRepository:
         with DbConnection.conn.cursor() as cur:
             cur.execute(sql)
             row = cur.fetchone()
+        print(f'notificationRepository: sql result = {row}')
         if row is None:
             # no host is handling the user websocket
             return
         host_port = row[0]
 
+        print(f'notificationRepository: url = {internal_url.format(host_port=host_port)}')
         await self.client.post(internal_url.format(host_port=host_port))
