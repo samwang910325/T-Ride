@@ -2,7 +2,7 @@ from repository.notificationRepository import *
 from repository.userRepository import *
 from repository.orderRepository import *
 from repository.matchRepository import *
-import re
+from utils.config import Config
 
 
 class NotificationService:
@@ -15,16 +15,14 @@ class NotificationService:
     def register_host_port(self, user_id, host_port):
         '''
         return "user not found",
-               "invalid format"
 
         return None on success
         '''
         if self.user_repository.get_user(user_id) is None:
             return "user not found"
 
-        pattern = re.compile(r'^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}:\d+$')
-        if not bool(pattern.match(host_port)):
-            return "invalid format"
+        if not bool(int(Config.get('service').get('websocket_register_port'))):
+            host_port = host_port.split(':')[0]
 
         self.notification_repository.register_host_port(user_id, host_port)
 
