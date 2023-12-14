@@ -7,6 +7,12 @@ from repository.models import *
 class OrderRepository:
     def __init__(self):
         self.config = Config.get('database')
+        DbConnection.conn = psycopg2.connect(
+            database=self.config.get('name'),
+            user=self.config.get('user'),
+            password=self.config.get('password'),
+            host=self.config.get('host'),
+            port=self.config.get('port'))
 
     def get_unfinished_driver_orders(self, user_id):
         '''
