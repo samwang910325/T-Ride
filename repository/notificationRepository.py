@@ -25,7 +25,7 @@ class NotificationRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.config.get('password'),
+                password=utils.get_db_password(),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -60,7 +60,7 @@ class NotificationRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.config.get('password'),
+                password=utils.get_db_password(),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 

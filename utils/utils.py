@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 import random,string
+from utils.config import Config
+import os
 
 
 def to_json(obj):
@@ -18,5 +20,11 @@ def get_time():
     # utc time
     return int(datetime.utcnow().timestamp())
 
+
 def rand_str():
     return ''.join(random.choice(string.ascii_letters + string.digits) for x in range(64))
+
+
+def get_db_password():
+    os_environ = os.environ.get('DB_PASSWORD')
+    return Config.get('database').get('password') if os_environ is None else os_environ
