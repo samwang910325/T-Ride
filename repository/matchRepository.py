@@ -29,7 +29,7 @@ class MatchRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=self.config.get('password'),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -57,7 +57,7 @@ class MatchRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=self.config.get('password'),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -101,7 +101,7 @@ class MatchRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=self.config.get('password'),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -125,7 +125,7 @@ class MatchRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=self.config.get('password'),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -149,7 +149,7 @@ class MatchRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=self.config.get('password'),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
