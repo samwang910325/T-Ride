@@ -7,12 +7,6 @@ import httpx
 class NotificationRepository:
     def __init__(self):
         self.config = Config.get('database')
-        DbConnection.conn = psycopg2.connect(
-            database=self.config.get('name'),
-            user=self.config.get('user'),
-            password=self.utils.get_db_password(),
-            host=self.config.get('host'),
-            port=self.config.get('port'))
         self.client = httpx.AsyncClient()
 
     def register_host_port(self, user_id, host_port):
@@ -31,7 +25,7 @@ class NotificationRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=utils.get_db_password(),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
@@ -66,7 +60,7 @@ class NotificationRepository:
             DbConnection.conn = psycopg2.connect(
                 database=self.config.get('name'),
                 user=self.config.get('user'),
-                password=self.utils.get_db_password(),
+                password=utils.get_db_password(),
                 host=self.config.get('host'),
                 port=self.config.get('port'))
 
