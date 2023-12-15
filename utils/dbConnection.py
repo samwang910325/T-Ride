@@ -1,5 +1,6 @@
 import psycopg2
 from utils.config import Config
+from utils import utils
 
 
 class DbConnection:
@@ -7,6 +8,6 @@ class DbConnection:
     conn = psycopg2.connect(
         database=config.get('name'),
         user=config.get('user'),
-        password=config.get('password'),
+        password=utils.get_db_password(),
         host=config.get('host'),
         port=config.get('port'))
