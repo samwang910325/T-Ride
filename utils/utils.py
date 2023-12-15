@@ -25,5 +25,5 @@ def rand_str():
 
 def get_db_password():
     environ_password = os.environ.get('DB_PASSWORD')
-    print('environment db password: {environ_password}')
+    print(f'environment db password: {environ_password}')
     return environ_password if environ_password else Config.get('database').get('password')
