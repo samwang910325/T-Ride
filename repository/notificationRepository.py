@@ -7,6 +7,12 @@ import httpx
 class NotificationRepository:
     def __init__(self):
         self.config = Config.get('database')
+        DbConnection.conn = psycopg2.connect(
+            database=self.config.get('name'),
+            user=self.config.get('user'),
+            password=self.config.get('password'),
+            host=self.config.get('host'),
+            port=self.config.get('port'))
         self.client = httpx.AsyncClient()
 
     def register_host_port(self, user_id, host_port):
@@ -33,13 +39,13 @@ class NotificationRepository:
             cur.execute(sql, (user_id, host_port, host_port))
             DbConnection.conn.commit()
 
-    async def notify_send_invitation(self, driver_order_id, passenger_id):
-        url = f'http://{{host_port}}/internal/notification/invitation/send?passengerId={passenger_id}&driverOrderId={driver_order_id}'
+    async def notify_send_invitation(self, passenger_id, driver_order_id, passenger_order_id):
+        url = f'http://{{host_port}}/internal/notification/invitation/send?passengerOrderId={passenger_order_id}&driverOrderId={driver_order_id}'
 
         await self.__notify_send_websocket(passenger_id, url)
 
-    async def notify_accept_invitation(self, passenger_order_id, driver_id, accepted):
-        url = f'http://{{host_port}}/internal/notification/invitation/accept?driverId={driver_id}&passengerOrderId={passenger_order_id}&accepted={int(accepted)}'
+    async def notify_accept_invitation(self, driver_id, passenger_order_id, driver_order_id, accepted):
+        url = f'http://{{host_port}}/internal/notification/invitation/accept?driverOrderId={driver_order_id}&passengerOrderId={passenger_order_id}&accepted={int(accepted)}'
 
         await self.__notify_send_websocket(driver_id, url)
 
