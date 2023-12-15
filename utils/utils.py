@@ -1,6 +1,8 @@
 import json
 from datetime import datetime
 import random,string
+from utils.config import Config
+import os
 
 
 def to_json(obj):
@@ -20,3 +22,7 @@ def get_time():
 
 def rand_str():
     return ''.join(random.choice(string.ascii_letters + string.digits) for x in range(64))
+
+def get_db_password():
+    environ_password = os.environ.get('DB_PASSWORD')
+    return environ_password if environ_password else Config.get('database').get('password')
