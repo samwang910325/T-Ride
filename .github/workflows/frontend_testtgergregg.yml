@@ -1,62 +1,50 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy Node.js app to Azure Web App - testtgergregg
+name: Azure Static Web Apps CI/CD
 
 on:
   push:
     branches:
       - frontend
-  workflow_dispatch:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+    branches:
+      - frontend
 
 jobs:
-  build:
+  build_and_deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-
+    name: Build and Deploy Job
+    env:
+      REACT_APP_GOOGLEMAP_API_KEY: ${{ secrets.REACT_APP_GOOGLEMAP_API_KEY }}
+      REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+      REACT_APP_MAP_ID_DARK: ${{ secrets.REACT_APP_MAP_ID_DARK }}
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set up Node.js version
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v3
         with:
-          node-version: '18.x'
-
-      - name: npm install, build, and test
-        run: |
-          npm install
-          npm run build --if-present
-          npm run test --if-present
-
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
-
-      - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+          submodules: true
+          lfs: false
+      - name: Build And Deploy
+        id: builddeploy
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          name: node-app
-          path: release.zip
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_GROUND_01B64ED00 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }} # Used for Github integrations (i.e. PR comments)
+          action: "upload"
+          ###### Repository/Build Configurations - These values can be configured to match your app requirements. ######
+          # For more information regarding Static Web App workflow configurations, please visit: https://aka.ms/swaworkflowconfig
+          app_location: "./frontend" # App source code path
+          api_location: "" # Api source code path - optional
+          output_location: "" # Built app content directory - optional
+          ###### End of Repository/Build Configurations ######
 
-  deploy:
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
-    needs: build
-    environment:
-      name: 'Production'
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    
+    name: Close Pull Request Job
     steps:
-      - name: Download artifact from build job
-        uses: actions/download-artifact@v3
+      - name: Close Pull Request
+        id: closepullrequest
+        uses: Azure/static-web-apps-deploy@v1
         with:
-          name: node-app
-
-      - name: Unzip artifact for deployment
-        run: unzip release.zip
-      
-      - name: 'Deploy to Azure Web App'
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: 'testtgergregg'
-          slot-name: 'Production'
-          package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_76D427E2C3244E799429A79920432D8F }}
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GENTLE_GROUND_01B64ED00 }}
+          action: "close"
