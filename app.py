@@ -10,16 +10,10 @@ from utils.config import Config
 app = Quart(__name__)
 app = cors(app, allow_origin='*')
 
-@app.route('/github-webhook', methods=['POST'])
-async def github_webhook():
-    """
-        自動更新程式碼
-        ---
-        tags:
-        - Match
-        produces: application/json,   
-    """
-    subprocess.run(['git', 'pull'])
+@app.route('/health')
+def health_check():
+    # 在這裡可以加上一些檢查邏輯，確保應用程式的正常運作
+    # 例如：檢查資料庫連線、外部服務是否可訪問等
     return 'OK'
 
 @app.route('/Swagger/')
